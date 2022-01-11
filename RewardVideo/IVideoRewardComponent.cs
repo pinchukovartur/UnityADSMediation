@@ -10,7 +10,7 @@ namespace Source.Scripts.Libs.AdsManager
         /// <summary>
         /// Is ready show reward video ?
         /// </summary>
-        bool IsReady { get; set; }
+        bool IsReady { get; }
 
         /// <summary>
         /// Is need reward user for watch reward video?

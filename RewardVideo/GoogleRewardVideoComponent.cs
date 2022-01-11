@@ -12,9 +12,6 @@ namespace Source.Scripts.Libs.AdsManager
     {
         [SerializeField, Tooltip("Video Banner Id")]
         private string _videoBannerId;
-       
-        [SerializeField, Tooltip("App Id")]
-        private string _appId;
         
         /// <summary>
         /// Rewarder video object
@@ -25,7 +22,7 @@ namespace Source.Scripts.Libs.AdsManager
         /// <summary>
         /// Is ready show reward video ?
         /// </summary>
-        public bool IsReady { get; set; }
+        public bool IsReady { get { return _rewardBasedVideo.IsLoaded(); } }
 
         /// <inheritdoc />
         /// <summary>
@@ -67,7 +64,7 @@ namespace Source.Scripts.Libs.AdsManager
         /// </summary>
         public void TryLoad()
         {
-            if (IsReady)
+            if (!_rewardBasedVideo.IsLoaded())
                 return;
 
             var request = new AdRequest.Builder().Build();
@@ -83,7 +80,6 @@ namespace Source.Scripts.Libs.AdsManager
             if (!IsReady) 
                 return;
             
-            IsReady = false;
             IsShowing = true;
             _rewardBasedVideo.Show();
         }
@@ -95,7 +91,6 @@ namespace Source.Scripts.Libs.AdsManager
         /// <param name="args"></param>
         private void VideoLoaded(object sender, EventArgs args)
         {
-            IsReady = true;
         }
 
         /// <summary>
@@ -105,7 +100,7 @@ namespace Source.Scripts.Libs.AdsManager
         /// <param name="args"></param>
         private void VideoFailedToLoad(object sender, AdFailedToLoadEventArgs args)
         {
-            IsReady = false;
+
         }
 
         /// <summary>
@@ -115,7 +110,6 @@ namespace Source.Scripts.Libs.AdsManager
         /// <param name="args"></param>
         private void VideoClosed(object sender, EventArgs args)
         {
-            IsReady = false;
             IsShowing = false;
             if (OnCloseWatch != null)
                 OnCloseWatch.Invoke("Admob Reward ADS");

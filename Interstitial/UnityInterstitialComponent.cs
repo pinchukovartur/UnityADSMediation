@@ -1,17 +1,17 @@
-﻿using System;
+using System;
 using UnityEngine;
 using UnityEngine.Advertisements;
 using UnityEngine.UI;
 
-namespace Source.Scripts.Libs.AdsManager
+namespace ADSMediation
 {
-    public class UnityRewardVideoComponent : MonoBehaviour, IVideoRewardComponent, IUnityAdsListener
+    public class UnityInterstitialComponent : MonoBehaviour, IInterstitialComponent, IUnityAdsListener
     {
         [SerializeField, Tooltip("Unity game id")]
         private string _gameId = "3220349";
-        
+
         [SerializeField, Tooltip("Unity placement id")]
-        private string _placementId = "OpenLater";
+        private string _placementId = "";
 
         /// <inheritdoc />
         /// <summary>
@@ -20,8 +20,6 @@ namespace Source.Scripts.Libs.AdsManager
         public bool IsReady
         {
             get { return Advertisement.IsReady(_placementId) && Advertisement.GetPlacementState(_placementId) == PlacementState.Ready; }
-            //get { return false; }
-            set { }
         }
 
         /// <inheritdoc />
@@ -30,11 +28,6 @@ namespace Source.Scripts.Libs.AdsManager
         /// </summary>
         public bool IsShowing { get; set; }
 
-        /// <inheritdoc />
-        /// <summary>
-        /// Is need reward user for watch reward video?
-        /// </summary>
-        public bool IsNeedReward { get; set; }
 
         /// <inheritdoc />
         /// <summary>
@@ -89,21 +82,7 @@ namespace Source.Scripts.Libs.AdsManager
         public void OnUnityAdsDidFinish(string placementId, ShowResult showResult)
         {
             IsShowing = false;
-            switch (showResult)
-            {
-                case ShowResult.Failed:
-                    IsNeedReward = false;
-                    break;
-                case ShowResult.Skipped:
-                    IsNeedReward = false;
-                    break;
-                case ShowResult.Finished:
-                    IsNeedReward = true;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException("showResult", showResult, null);
-            }
-
+            
             if (OnCloseWatch != null)
                 OnCloseWatch.Invoke("Unity Reward ADS");
         }
