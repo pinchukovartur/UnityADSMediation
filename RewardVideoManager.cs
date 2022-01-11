@@ -1,8 +1,6 @@
-﻿using Controllers;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-//using Source.Scripts.Controller;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -62,7 +60,7 @@ namespace Source.Scripts.Libs.AdsManager
             {
                 Action<string> unlockAction = (s) =>
                 {
-                    LockController.Instance.UnLock();
+                    LockUIADSAdapter.UnLockUI();
                 };
 
                 foreach (var component in _components)
@@ -90,7 +88,8 @@ namespace Source.Scripts.Libs.AdsManager
             {
                 if (!component.IsReady) 
                     continue;
-                LockController.Instance.Lock();
+
+                LockUIADSAdapter.LockUI();
                 component.Show();
                 break;
             }
